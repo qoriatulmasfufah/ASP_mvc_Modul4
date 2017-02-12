@@ -1,9 +1,13 @@
-﻿using System.Web.Mvc;
-using System.Web.Security;
+﻿using Asp_mvc_2.Models.EntityManager;
 using Asp_mvc_2.Models.ViewModel;
-using Asp_mvc_2.Models.EntityManager;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Security;
 
-namespace Asp_mvc_2.Controllers
+namespace asp_mvc_4.Controllers
 {
     public class AccountController : Controller
     {
@@ -30,7 +34,6 @@ namespace Asp_mvc_2.Controllers
             }
             return View();
         }
-
         public ActionResult LogIn()
         {
             return View();
@@ -45,13 +48,12 @@ namespace Asp_mvc_2.Controllers
                 string password = UM.GetUserPassword(ULV.LoginName);
 
                 if (string.IsNullOrEmpty(password))
-                    ModelState.AddModelError("", "The user login or password provided is incorrect.");
+                    ModelState.AddModelError("", "The user login or password is incorrect.");
                 else
                 {
                     if (ULV.Password.Equals(password))
                     {
-                        FormsAuthentication.SetAuthCookie(ULV.LoginName, false);
-                        return RedirectToAction("Welcome", "Home");
+                        FormsAuthentication.SetAuthCookie(ULV.LoginName, false); return RedirectToAction("Welcome", "Home");
                     }
                     else
                     {
@@ -60,10 +62,9 @@ namespace Asp_mvc_2.Controllers
                 }
             }
 
-            // If we got this far, something failed, redisplay form 
+            // If we got this far, something failed, redisplay form
             return View(ULV);
         }
-
         [Authorize]
         public ActionResult SignOut()
         {
@@ -71,4 +72,5 @@ namespace Asp_mvc_2.Controllers
             return RedirectToAction("Index", "Home");
         }
     }
+
 }

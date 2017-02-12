@@ -18,12 +18,11 @@ namespace asp_mvc_2.Models.DB
         {
             this.SYSUserProfiles = new HashSet<SYSUserProfile>();
             this.SYSUserRoles = new HashSet<SYSUserRole>();
-            this.SYSUserRoles1 = new HashSet<SYSUserRole>();
         }
     
         public int SYSUserID { get; set; }
         public string LoginName { get; set; }
-        public string PasswordEncrytedText { get; set; }
+        public string PasswordEncryptedText { get; set; }
         public int RowCreatedSYSUserID { get; set; }
         public Nullable<System.DateTime> RowCreatedDateTime { get; set; }
         public int RowModifiedSYSUserID { get; set; }
@@ -31,6 +30,5 @@ namespace asp_mvc_2.Models.DB
     
         public virtual ICollection<SYSUserProfile> SYSUserProfiles { get; set; }
         public virtual ICollection<SYSUserRole> SYSUserRoles { get; set; }
-        public virtual ICollection<SYSUserRole> SYSUserRoles1 { get; set; }
     }
 }

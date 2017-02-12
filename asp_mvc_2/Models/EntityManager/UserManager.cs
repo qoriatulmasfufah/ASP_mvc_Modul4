@@ -16,7 +16,7 @@ namespace Asp_mvc_2.Models.EntityManager
 
                 SYSUser SU = new SYSUser();
                 SU.LoginName = user.LoginName;
-                SU.PasswordEncrytedText = user.Password;
+                SU.PasswordEncryptedText = user.Password;
                 SU.RowCreatedSYSUserID = user.SYSUserID > 0 ? user.SYSUserID : 1;
                 SU.RowModifiedSYSUserID = user.SYSUserID > 0 ? user.SYSUserID : 1; ;
                 SU.RowCreatedDateTime = DateTime.Now;
@@ -70,7 +70,7 @@ namespace Asp_mvc_2.Models.EntityManager
             {
                 var user = db.SYSUsers.Where(o => o.LoginName.ToLower().Equals(loginName));
                 if (user.Any())
-                    return user.FirstOrDefault().PasswordEncrytedText;
+                    return user.FirstOrDefault().PasswordEncryptedText;
                 else
                     return string.Empty;
             }
@@ -131,7 +131,7 @@ namespace Asp_mvc_2.Models.EntityManager
                     UPV = new UserProfileView();
                     UPV.SYSUserID = u.SYSUserID;
                     UPV.LoginName = u.LoginName;
-                    UPV.Password = u.PasswordEncrytedText;
+                    UPV.Password = u.PasswordEncryptedText;
 
                     var SUP = db.SYSUserProfiles.Find(u.SYSUserID);
                     if (SUP != null)
@@ -194,7 +194,7 @@ namespace Asp_mvc_2.Models.EntityManager
 
                         SYSUser SU = db.SYSUsers.Find(user.SYSUserID);
                         SU.LoginName = user.LoginName;
-                        SU.PasswordEncrytedText = user.Password;
+                        SU.PasswordEncryptedText = user.Password;
                         SU.RowCreatedSYSUserID = user.SYSUserID;
                         SU.RowModifiedSYSUserID = user.SYSUserID;
                         SU.RowCreatedDateTime = DateTime.Now;
@@ -297,6 +297,38 @@ namespace Asp_mvc_2.Models.EntityManager
                     }
                 }
             }
-        } 
+        }
+
+        public UserProfileView GetUserProfile(int userID)
+        {
+            UserProfileView UPV = new UserProfileView();
+            using (DemoDB1Entities db = new DemoDB1Entities())
+            {
+                var user = db.SYSUsers.Find(userID);
+                if (user != null)
+                {
+                    UPV.SYSUserID = user.SYSUserID;
+                    UPV.LoginName = user.LoginName;
+                    UPV.Password = user.PasswordEncryptedText;
+
+                    var SUP = db.SYSUserProfiles.Find(userID);
+                    if (SUP != null)
+                    {
+                        UPV.FirstName = SUP.FirstName;
+                        UPV.LastName = SUP.LastName;
+                        UPV.Gender = SUP.Gender;
+                    }
+
+                    var SUR = db.SYSUserRoles.Find(userID);
+                    if (SUR != null)
+                    {
+                        UPV.LOOKUPRoleID = SUR.LOOKUPRoleID;
+                        UPV.RoleName = SUR.LOOKUPRole.RoleName;
+                        UPV.IsRoleActive = SUR.IsActive;
+                    }
+                }
+            }
+            return UPV;
+        }
     }
 }
